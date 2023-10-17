@@ -1,0 +1,22 @@
+{
+  "name": "proyecto_final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "watch": "node --watch .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MayVvelazquez/Proyecto_Final_TP2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MayVvelazquez/Proyecto_Final_TP2/issues"
+  },
+  "homepage": "https://github.com/MayVvelazquez/Proyecto_Final_TP2#readme"
+}
