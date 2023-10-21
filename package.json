@@ -1,8 +1,8 @@
 {
   "name": "proyecto_final",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Inicializar node: npm init -y\r Inicializar Express: npm i express",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "start": "node .",
@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/MayVvelazquez/Proyecto_Final_TP2#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0"
   }
 }
