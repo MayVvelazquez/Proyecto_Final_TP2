@@ -69,5 +69,37 @@ class UserController{
             res.status(400).send({success:false, message:error.message});
         }
     };
-}
+
+
+    //Login
+    login = async (req, res) =>{
+        try{
+            const{email, password} = req.body;
+            const user = await User.findOne({
+              where: { email },
+              include: [{ model: Role }],
+            });
+            if (!user) throw new Error("Usuario no encontrado");
+            const validate = await user.validatePassword(password);
+            if (!validate) throw new Error("Password incorrecta");
+            const payload = {
+              id: user.id,
+              role: user.Role.dataValues.name,
+            };
+            const token = generateToken(payload);
+            res.cookie("token", token);
+      
+            res.status(200).send({ success: true, message: "Usuario Logueado" });
+        }catch(error){
+            res.status(400).send({success:false, message:error.message});
+        }
+    };
+    me= async (req, res) =>{
+        try{
+            const {user} = req;
+            res.status(200).send({ success: true, message: "Operaciòn exitosa", data: user});
+        }catch(error){
+            res.status(400).send({ success: false, message: error.message });
+    }
+}}
 export default UserController;

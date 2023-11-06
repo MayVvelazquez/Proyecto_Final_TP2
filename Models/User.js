@@ -3,10 +3,11 @@ import connection from "../connection/connection.js";
 import bcrypt from "bcrypt";
 
 class User extends Model{
-    async validatePassword(password){
-        return await bcrypt.compare(password, this.password);
+   validatePassword = async (password) =>{
+    const validate = await bcrypt.hash(password, this.salt);   
+    return validate === this.password;
     }
-}
+};
 //es importante validar lo entrante por medio del 'validate'
 User.init({
     //ID aca o en role?
@@ -17,7 +18,7 @@ User.init({
     nombre: {
         type:DT.STRING, 
         validate:{
-            require:true
+            notEmpty: true,
         }
     },
     email: {
@@ -28,13 +29,13 @@ User.init({
           isEmail: true,
         }
       },
+    salt:{
+        type: DT.STRING
+    },
     password: {
         type: DT.STRING,
         allowNull: false
-      },
-    salt:{
-        type: DT.STRING
-      },
+    },
 },{ 
     sequelize:connection,
     modelName:"User",
@@ -44,8 +45,8 @@ User.beforeCreate(async(user) =>{
     const salt = await bcrypt.genSalt();
     user.salt = salt;
     
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
+    const hashPassword = await bcrypt.hash(user.password, salt);
+    user.password = hashPassword;
 });
 
 export default User;
