@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 //hash password
 export const generateToken = (payload) => {
-  const token = jwt.sign(payload, "chayanne", { expiresIn: "2d" });
+  //Secret
+  const token = jwt.sign(payload, "ecommerce", { expiresIn: "30d" });
   return token;
 };
 
 export const verifyToken = (token) => {
-  const verify = jwt.verify(token, "chayanne");
+  const verify = jwt.verify(token, "ecommerce");
   return verify;
 };

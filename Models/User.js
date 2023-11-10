@@ -14,6 +14,7 @@ User.init({
     id:{
         type: DT.INTEGER,
         autoIncrement: true,
+        primaryKey: true,
     },
     nombre: {
         type:DT.STRING, 

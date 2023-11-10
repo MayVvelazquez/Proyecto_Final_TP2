@@ -46,7 +46,7 @@ class UserController{
     updateUser=async(req,res)=>{
         try {
             const {id} = req.params;
-            const {name, email, password, roleId} = reo.body;
+            const {name, email, password, roleId} = req.body;
             const user = await User.update({
                 name, email, password, roleId
             },
@@ -97,7 +97,7 @@ class UserController{
     me= async (req, res) =>{
         try{
             const {user} = req;
-            res.status(200).send({ success: true, message: "Operaciòn exitosa", data: user});
+            res.status(200).send({ success: true, message: "Operacion exitosa", data: user});
         }catch(error){
             res.status(400).send({ success: false, message: error.message });
     }

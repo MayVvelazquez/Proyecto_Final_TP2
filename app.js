@@ -11,7 +11,7 @@ app.use(express.urlencoded({extended:true})); //midlware para setear los datos d
 
 
 
-
+//Instalar cors para conectar con el frontend
 
 app.use("/api", router)
 
