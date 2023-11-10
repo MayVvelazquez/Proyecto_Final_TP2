@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
+import { DB_PASSWORD} from "../config/config.js";
 
-
-const connection = new Sequelize("proyectoapi","root","",{
+const connection = new Sequelize("proyectoapi","root",DB_PASSWORD,{
     host:'localhost',
     dialect: 'mysql',
     port:3306,
