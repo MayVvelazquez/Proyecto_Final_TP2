@@ -16,7 +16,7 @@ User.init({
         autoIncrement: true,
         primaryKey: true,
     },
-    nombre: {
+    name: {
         type:DT.STRING, 
         validate:{
             notEmpty: true,
@@ -40,6 +40,7 @@ User.init({
 },{ 
     sequelize:connection,
     modelName:"User",
+    timestamps: false,
 });
 
 User.beforeCreate(async(user) =>{

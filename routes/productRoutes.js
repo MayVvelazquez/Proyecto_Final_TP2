@@ -3,7 +3,7 @@ import ProductController from "../controller/ProductController.js";
 const productRoutes = Router();
 const productController=new ProductController()
 
-productRoutes.get("", productController.getAllProduct);
+productRoutes.get("", productController.getAllProducts);
 productRoutes.get("/:id", productController.getProductById);
 productRoutes.post("/", productController.createProduct);
 productRoutes.put("/:id",productController.updateProduct);
