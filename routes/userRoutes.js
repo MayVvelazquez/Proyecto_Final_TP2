@@ -16,7 +16,6 @@ userRoutes.get("/me", validateUser, userController.me);
 userRoutes.use(validateUser);
 
 //Ver si lo hacemos por nombre o por id
-
 userRoutes.get("", userController.getAllUser);
 userRoutes.get("/:id", userController.getUserById);
 userRoutes.put("/:id", userController.updateUser);

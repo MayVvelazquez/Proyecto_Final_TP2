@@ -7,7 +7,7 @@ Product.init({
     id:{
         type: DT.INTEGER,
         autoIncrement: true,
-        unique:true,
+        primaryKey:true,
     },
     name: {
         type:DT.STRING, 
@@ -24,21 +24,23 @@ Product.init({
         type: DT.INTEGER,
         allowNull: false
     },
+    image:{
+        type: DT.STRING,
+        allowNull: false
+    },
     price:{
-        type: DT.RANGE(DT.DECIMAL),
+        type: DT.DECIMAL(9,2),
         allowNull: false,
         validate:{
             notEmpty: true,
             notNull: true,
         }
     },
-    image:{
-        type: DT.STRING,
-        allowNull: false
-    },
+  
 },{ 
     sequelize:connection,
     modelName:"Product",
+    timestamps: false,
 });
 
 
