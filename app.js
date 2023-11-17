@@ -2,6 +2,7 @@ import express from "express"
 import connection from "./connection/connection.js"
 import Role from "./Models/Role.js";//
 import router from "./routes/router.js";
+import { SERVER_PROT } from "./config/config.js";
 
 /* console.log("🚀 ~ file: index.js:2 ~ express:", express) */
 const app = express();
@@ -18,7 +19,7 @@ app.use("/api", router)
 
 //El siguiente await es solo para desarrollo, cuando se pase a produccion se quita.
 await connection.sync({ force: false}).then(() => {
-    app.listen(3000, ()=>{
+    app.listen(SERVER_PROT, ()=>{
         console.log("El puerto 3000 se ejecuto con EXITO ")
     });
 });

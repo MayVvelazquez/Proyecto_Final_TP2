@@ -1,5 +1,5 @@
 import {Product, ProductTags, Tag} from "../Models/index.js";   //Desglozamos esto porque los productos van a necesitar estos
-import { Op } from "sequelize";
+import { Op } from "sequelize"; // Operadores para ayudar a construir consultas complejas.
 
 class ProductController{
     constructor(){}
