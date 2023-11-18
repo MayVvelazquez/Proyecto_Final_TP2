@@ -1,105 +1,158 @@
-import {User, Role} from "../Models/index.js";  
+import { User, Role } from "../Models/index.js";
+import { Op } from "sequelize";
 
-class UserController{
-    constructor(){}
+class UserController {
+    constructor() { }
 
-    //Obtener todos los usuario 
-    getAllUser=async(req,res)=>{
+
+    getAllUser = async (req, res) => {
         try {
             const users = await User.findAll({
-                attributes: ["id","name"],
-                include:[{model: Role, attributes:["name"]}],
+                attributes: ["id", "name", "email"],
+                include: [{ model: Role, attributes: ["name"] }],
             });
-            res.status(200).send({success: true, message:"Todos los usuarios", data: users})
+            // Eliminar la contraseña de cada usuario antes de enviar la respuesta
+            users.forEach(user => {
+                delete user.dataValues.password; //dataValues contiene los datos reales del usuario
+                if (user.Role) {
+                    delete user.Role.dataValues.password;
+                }
+            });
+            res.status(200).send({ success: true, message: "Todos los usuarios", data: users })
         } catch (error) {
-            res.status(400).send({success: false, message:error.message})
+            res.status(500).send({ success: false, message: 'Error al obtener usuarios', error: error.message });
         }
     };
-    //Obtener el user por su id
-    getUserById=async(req,res)=>{
+
+    getUserById = async (req, res) => {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             const user = await User.findOne({
-                where: {id},
-                attributes:["id", "name", /* "email" */],
-                include:[{model: Role, attributes:["name"]}],
+                where: { id },
+                attributes: ['id', 'name', 'email'],
+                include: [{ model: Role, attributes: ['name'] }],
             });
-            if(!user) throw new Error ("No existe este usuario");
-            res.status(200).send({success: true, message:"User obtenido:", data:user});
+            if (!user) {
+                return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
+            }
+
+            // No enviar la contraseña en la respuesta
+            delete user.dataValues.password;
+
+            res.status(200).send({ success: true, message: 'Usuario obtenido:', data: user });
         } catch (error) {
-            res.status(400).send({success: false, message:error.message});
+            console.error(error);
+            res.status(500).send({ success: false, message: 'Error al obtener el usuario', error: error.message });
         }
     };
-    //Crear user 
-    createUser=async(req,res)=>{
+
+    createUser = async (req, res) => {
         try {
-            const{name, email, password, roleId} = req.body;
-            const user = User.create({name, email, password, roleId})
-            console.log(user)
-            if(!user) throw new Error("No se creo usuario");
-            res.status(200).send({success:true, message:"User creado", data:user});
+            const { name, email, password, roleId } = req.body;
+
+            // Verificar email
+            console.log("Valor del email:", email);
+            if (!email) {
+                return res.status(400).send({ success: false, message: 'Se requiere un email para crear el usuario' });
+            }
+            // Verifico si el email ya está en uso antes de crear el user
+            const existingUser = await User.findOne({ where: { email } });
+            if (existingUser) {
+                return res.status(400).send({ success: false, message: 'El email ya está en uso' });
+            }
+
+            // Creo el user si el email no está duplicado
+            const newUser = await User.create({ name, email, password, roleId });
+            if (!newUser) {
+                throw new Error('No se pudo crear el usuario');
+            }
+
+            return res.status(201).send({ success: true, message: 'Usuario creado correctamente', data: newUser });
         } catch (error) {
-            res.status(400).send({success:false, message:error.message});
+            console.error(error);
+            return res.status(500).send({ success: false, message: 'Error al crear el usuario', error: error.message });
         }
     };
-    //Actualizar user
-    updateUser=async(req,res)=>{
+
+
+    updateUser = async (req, res) => {
         try {
-            const {id} = req.params;
-            const {name, email, password, roleId} = req.body;
-            const user = await User.update({
-                name, email, password, roleId
-            },
-            {where:{id},
-        });
-        res.status(200).send({success:true, message:"User modificado", data:user});
-    } catch (error) {
-        res.status(400).send({success:false, message:error.message});
-    }
+            const { id } = req.params;
+            const { name, email, password, roleId } = req.body;
+
+            // Verificar si el email es único antes de actualizar
+            const existeUser = await User.findOne({ where: { email, id: { [Op.not]: id } } }); //Op.not se utiliza en consultas para negar una condición.
+            if (existeUser) {
+                return res.status(400).send({ success: false, message: 'El email ya está en uso' });
+            }
+
+            // Actualizar los campos 
+            const updatedUser = await User.update(
+                { name, email, password, roleId },
+                { where: { id } }
+            );
+            if (updatedUser[0] === 0) {
+                return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
+            }
+
+            return res.status(200).send({ success: true, message: 'Usuario actualizado correctamente' });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({ success: false, message: 'Error al actualizar el usuario', error: error.message });
+        }
     };
-    //Eliminar user
-    deleteUser=async(req,res)=>{
+
+    deleteUser = async (req, res) => {
         try {
-            const {id} = req.params;
-            const user = await User.destroy({
+            const { id } = req.params;
+
+            //Verifico si el usuario existe antes de eliminarlo
+            const buscarUser = await User.findByPk(id);
+            if (!buscarUser) {
+                return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
+            }
+            // Elimino el usuario
+            await User.destroy({
                 where: { id },
             });
-            res.status(200).send({success:true, message:"User eliminado", data:user});
+
+            res.status(200).send({ success: true, message: 'Usuario eliminado correctamente' });
         } catch (error) {
-            res.status(400).send({success:false, message:error.message});
+            res.status(500).send({ success: false, message: 'Error al eliminar el usuario', error: error.message });
         }
     };
 
 
     //Login
-    login = async (req, res) =>{
-        try{
-            const{email, password} = req.body;
+    login = async (req, res) => {
+        try {
+            const { email, password } = req.body;
             const user = await User.findOne({
-              where: { email },
-              include: [{ model: Role }],
+                where: { email },
+                include: [{ model: Role }],
             });
             if (!user) throw new Error("Usuario no encontrado");
             const validate = await user.validatePassword(password);
             if (!validate) throw new Error("Password incorrecta");
             const payload = {
-              id: user.id,
-              role: user.Role.dataValues.name,
+                id: user.id,
+                role: user.Role.dataValues.name,
             };
             const token = generateToken(payload);
             res.cookie("token", token);
-      
+
             res.status(200).send({ success: true, message: "Usuario Logueado" });
-        }catch(error){
-            res.status(400).send({success:false, message:error.message});
+        } catch (error) {
+            res.status(400).send({ success: false, message: error.message });
         }
     };
-    me= async (req, res) =>{
-        try{
-            const {user} = req;
-            res.status(200).send({ success: true, message: "Operacion exitosa", data: user});
-        }catch(error){
+    me = async (req, res) => {
+        try {
+            const { user } = req;
+            res.status(200).send({ success: true, message: "Operacion exitosa", data: user });
+        } catch (error) {
             res.status(400).send({ success: false, message: error.message });
+        }
     }
-}}
+}
 export default UserController;

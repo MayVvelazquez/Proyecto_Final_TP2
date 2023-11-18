@@ -24,17 +24,13 @@ Product.init({
         type: DT.INTEGER,
         allowNull: false
     },
-    image:{
-        type: DT.STRING,
-        allowNull: true
-    },
     price:{
         type: DT.DECIMAL(9,2),
         allowNull: false,
-        validate:{
+  /*       validate:{
             notEmpty: true,
             notNull: true,
-        }
+       }*/
     },
   
 },{ 

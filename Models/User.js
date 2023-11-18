@@ -10,7 +10,6 @@ class User extends Model{
 };
 //es importante validar lo entrante por medio del 'validate'
 User.init({
-    //ID aca o en role?
     id:{
         type: DT.INTEGER,
         autoIncrement: true,
@@ -18,6 +17,7 @@ User.init({
     },
     name: {
         type:DT.STRING, 
+        allowNull: false,
         validate:{
             notEmpty: true,
         }
