@@ -35,13 +35,14 @@ class ProductController{
         //Crear producto
         createProduct=async(req,res)=>{
             try {
-                const{name} = req.body;
-                const product = Product.create({name})
+                const{name,description,stock,price} = req.body;
+                const product = await Product.create({name,description,stock,price})
                 console.log(product)
                 res.status(200).send({success:true, message:"Producto creado"});
                 
             } catch (error) {
-                error.message("Error al crear");
+                console.log(error)
+                res.status(500).send({success: false, message: "Error al crear el producto" });
             }
         };
 
