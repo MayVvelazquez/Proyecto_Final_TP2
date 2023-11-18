@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { DB_USER, DB_NAME, DB_PASSWORD, DB_HOST, DB_PORT } from "../config/config.js";
+import { DB_USER, DB_NAME, DB_HOST, DB_PORT } from "../config/config.js";
 
 const connection = new Sequelize(DB_NAME,DB_USER,"",{
     host:DB_HOST,
