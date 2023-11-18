@@ -27,10 +27,10 @@ Product.init({
     price:{
         type: DT.DECIMAL(9,2),
         allowNull: false,
-        validate:{
+  /*       validate:{
             notEmpty: true,
             notNull: true,
-        }
+       }*/
     },
   
 },{ 
