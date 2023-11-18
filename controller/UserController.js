@@ -20,8 +20,8 @@ class UserController{
         try {
             const {id} = req.params;
             const user = await User.findOne({
-                where: {id},
-                attributes:["id", "name", /* "email" */],
+                where: {name: name},
+                attributes:["name", "email"],
                 include:[{model: Role, attributes:["name"]}],
             });
             if(!user) throw new Error ("No existe este usuario");

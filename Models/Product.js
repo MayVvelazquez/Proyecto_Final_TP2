@@ -24,10 +24,6 @@ Product.init({
         type: DT.INTEGER,
         allowNull: false
     },
-    image:{
-        type: DT.STRING,
-        allowNull: false
-    },
     price:{
         type: DT.DECIMAL(9,2),
         allowNull: false,
