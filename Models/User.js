@@ -1,24 +1,24 @@
-import { DataTypes as DT,Model } from "sequelize";
+import { DataTypes as DT, Model } from "sequelize";
 import connection from "../connection/connection.js";
 import bcrypt from "bcrypt";
 
-class User extends Model{
-   validatePassword = async (password) =>{
-    const validate = await bcrypt.hash(password, this.salt);   
-    return validate === this.password;
+class User extends Model {
+    validatePassword = async (password) => {
+        const validate = await bcrypt.hash(password, this.salt);
+        return validate === this.password;
     }
 };
 //es importante validar lo entrante por medio del 'validate'
 User.init({
-    id:{
+    id: {
         type: DT.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
     name: {
-        type:DT.STRING, 
+        type: DT.STRING,
         allowNull: false,
-        validate:{
+        validate: {
             notEmpty: true,
         }
     },
@@ -27,26 +27,32 @@ User.init({
         allowNull: false,
         unique: true,
         validate: {
-          isEmail: true,
+            isEmail: true,
         }
-      },
-    salt:{
-        type: DT.STRING
     },
     password: {
         type: DT.STRING,
         allowNull: false
     },
-},{ 
-    sequelize:connection,
-    modelName:"User",
+    vendorId: {
+        type: DT.INTEGER,
+        allowNull: true,
+        defaultValue: null
+    },
+    salt: {
+        type: DT.STRING
+    },
+
+}, {
+    sequelize: connection,
+    modelName: "User",
     timestamps: false,
 });
 
-User.beforeCreate(async(user) =>{
+User.beforeCreate(async (user) => {
     const salt = await bcrypt.genSalt();
     user.salt = salt;
-    
+
     const hashPassword = await bcrypt.hash(user.password, salt);
     user.password = hashPassword;
 });

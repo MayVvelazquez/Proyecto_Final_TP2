@@ -32,6 +32,11 @@ Product.init({
             notNull: true,
        }*/
     },
+    vendorId: {
+        type: DT.INTEGER,
+        allowNull: true,
+        defaultValue: null
+    },
   
 },{ 
     sequelize:connection,
