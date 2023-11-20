@@ -27,10 +27,15 @@ Product.init({
     price:{
         type: DT.DECIMAL(9,2),
         allowNull: false,
-  /*       validate:{
+        validate:{
             notEmpty: true,
             notNull: true,
-       }*/
+       }
+    },
+    vendorId: {
+        type: DT.INTEGER,
+        allowNull: true,
+        defaultValue: null
     },
   
 },{ 

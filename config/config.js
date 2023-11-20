@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-const SERVER_PROT = process.env.SERVER_PROT;
+const SERVER_PORT = process.env.SERVER_PORT;
 const DB_NAME = process.env.DB_NAME;
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
@@ -10,7 +10,7 @@ const DB_DIALECT = process.env.DB_DIALEC;
 const SECRET = process.env.SECRET;
 
 export {
-  SERVER_PROT,
+  SERVER_PORT,
   DB_NAME,
   DB_USER,
   DB_PASSWORD,
