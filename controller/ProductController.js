@@ -54,10 +54,23 @@ class ProductController {
     createProduct = async (req, res) => {
         try {
             const { name, description, stock, price } = req.body;
+            console.log("Datos recibidos:", { name, description, stock, price });
+            if (!name || !description || stock === undefined || price === undefined) {
+                return res.status(400).send({ success: false, message: 'Faltan datos para crear el producto' });
+            }
+           /*  if (!name) {
+                return res.status(400).send({ success: false, message: 'Faltan nombre' });
+            }if (!description) {
+                return res.status(400).send({ success: false, message: 'Faltan descripcion' });
+            } if (!stock) {
+                return res.status(400).send({ success: false, message: 'Faltan stock' });
+            }else{
+                return res.status(400).send({ success: false, message: 'Faltan precio' });
+            }; */
+
             const product = await Product.create({ name, description, stock, price})
             console.log(product)
-            if (!product.dataValues) throw new Error('No se puede crear producto')
-            res.status(201).send({ success: true, message: 'Producto creado', data: newProduct });
+            res.status(201).send({ success: true, message: 'Producto creado', data: product });
         } catch (error) {
             console.error(error);
             res.status(500).send({ success: false, message: 'Error al crear el producto' });
