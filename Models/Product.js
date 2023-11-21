@@ -31,13 +31,7 @@ Product.init({
             notEmpty: true,
             notNull: true,
        }
-    },
-    vendorId: {
-        type: DT.INTEGER,
-        allowNull: true,
-        defaultValue: null
-    },
-  
+    }, 
 },{ 
     sequelize:connection,
     modelName:"Product",

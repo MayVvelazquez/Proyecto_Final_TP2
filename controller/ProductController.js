@@ -1,9 +1,8 @@
-import { Product, ProductTags, Tag, User } from "../Models/index.js";   //Desglozamos esto porque los productos van a necesitar estos
+import { Product } from "../Models/index.js"; 
 
 class ProductController {
     constructor() { }
 
-    //Obtener todos los productos segun su user y tag 
     getAllProducts = async (req, res) => {
         try {
             const products = await Product.findAll({
@@ -15,7 +14,7 @@ class ProductController {
         }
     };
 
-    //Se obtiene un producto en especifico (Por ID) TERMINARLO, VINCULAR CON userId 
+    
     getProductById = async (req, res) => {
         try {
             const { id } = req.params;
@@ -47,8 +46,6 @@ class ProductController {
           }
         };
             
-
-    //Actualiza producto
     updateProduct = async (req, res) => {
         try {
             const { id } = req.params;
@@ -66,7 +63,7 @@ class ProductController {
             res.status(500).send({ success: false, message: 'Error al actualizar el producto' });
         }
     };
-    //Elimar producto
+
     deleteProduct = async (req, res) => {
         try {
             const { id } = req.params;

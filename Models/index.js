@@ -14,7 +14,7 @@ Product.belongsTo(User, {
 
 //Asociacion entre Product y Tag (M:M)
 Product.belongsToMany(Tag,{
-    through: ProductTags, //Le decimos que pase por la columna ProductTags
+    through: ProductTags,
     foreignKey: "productId"
 });
 
