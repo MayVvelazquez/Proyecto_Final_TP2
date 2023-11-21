@@ -1,7 +1,7 @@
 import { Product, ProductTags, Tag, User } from "../Models/index.js";   //Desglozamos esto porque los productos van a necesitar estos
 import validateResult from "express-validator";
 
-import validateProducto from "../mildleares/validateProduct.js";
+import validateProducto from "../middleware/validateProduct.js";
 
 
 class ProductController {

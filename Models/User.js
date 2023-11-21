@@ -8,7 +8,7 @@ class User extends Model {
         return validate === this.password;
     }
 };
-//es importante validar lo entrante por medio del 'validate'
+
 User.init({
     id: {
         type: DT.INTEGER,

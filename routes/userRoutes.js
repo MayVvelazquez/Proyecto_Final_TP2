@@ -1,7 +1,6 @@
 import { Router } from "express";
-/* import User from "../Models/User.js"*/
 import UserController from "../controller/UserController.js"
-import { validateUser } from "../mildleares/validateUser.js";
+import { validateUser } from "../middleware/validateUser.js";
 
 const userController = new UserController;
 

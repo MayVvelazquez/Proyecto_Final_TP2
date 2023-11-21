@@ -11,7 +11,7 @@ Product.init({
     },
     name: {
         type:DT.STRING, 
-        allowNull:false, //AllowNull si tiene permitido establecer un valor null
+        allowNull:false, 
         validate:{
             notEmpty: true,
         }
