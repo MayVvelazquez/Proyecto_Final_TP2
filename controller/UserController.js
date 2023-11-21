@@ -28,10 +28,6 @@ class UserController {
             if (!user) {
                 return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
             }
-
-            // No enviar la contraseña en la respuesta
-            delete user.dataValues.password;
-
             res.status(200).send({ success: true, message: 'Usuario obtenido:', data: user });
         } catch (error) {
             console.error(error);
@@ -56,19 +52,16 @@ class UserController {
         }
     };
 
-
     updateUser = async (req, res) => {
         try {
             const { id } = req.params;
             const { name, email, password } = req.body;
 
-            // Verificar si el email es único antes de actualizar
             const existeUser = await User.findOne({ where: { email, id: { [Op.not]: id } } }); //Op.not se utiliza en consultas para negar una condición.
             if (existeUser) {
                 return res.status(400).send({ success: false, message: 'El email ya está en uso' });
             }
 
-            // Actualizar los campos 
             const updatedUser = await User.update(
                 { name, email, password },
                 { where: { id } }
@@ -88,12 +81,11 @@ class UserController {
         try {
             const { id } = req.params;
 
-            //Verifico si el usuario existe antes de eliminarlo
             const buscarUser = await User.findByPk(id);
             if (!buscarUser) {
                 return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
             }
-            // Elimino el usuario
+            
             await User.destroy({
                 where: { id },
             });

@@ -6,15 +6,15 @@ const userController = new UserController;
 
 const userRoutes = Router();
 
-//Login
+
 userRoutes.post("/", userController.createUser);
 userRoutes.post("/login", userController.login);
 
-//Validacion persona real
+
 userRoutes.get("/me", validateUser, userController.me);
 userRoutes.use(validateUser);
 
-//Ver si lo hacemos por nombre o por id
+
 userRoutes.get("", userController.getAllUser);
 userRoutes.get("/:id", userController.getUserById);
 userRoutes.put("/:id", userController.updateUser);

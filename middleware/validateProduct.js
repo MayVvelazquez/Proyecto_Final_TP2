@@ -1,4 +1,4 @@
-import { body, validationResult} from "express-validator";
+import { body, validationResult } from "express-validator";
 
 export const validateProducto = [
   body('name').notEmpty().withMessage('El nombre no puede estar vacío'),
@@ -8,14 +8,15 @@ export const validateProducto = [
     .isNumeric().withMessage('El stock debe ser un número')
     .isInt({ min: 1 }).withMessage('El stock debe ser un número entero positivo'),
   body('price')
+    .isInt({ min: 10 }).withMessage('El precio debe ser mayor a 10')
     .notEmpty().withMessage('El precio no puede estar vacío')
     .isNumeric().withMessage('El precio debe ser un número'),
-  
-  
+
+
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
     next();
   }
