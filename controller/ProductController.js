@@ -1,8 +1,4 @@
 import { Product, ProductTags, Tag, User } from "../Models/index.js";   //Desglozamos esto porque los productos van a necesitar estos
-import validateResult from "express-validator";
-
-import validateProducto from "../middleware/validateProduct.js";
-
 
 class ProductController {
     constructor() { }
@@ -39,14 +35,7 @@ class ProductController {
 
 
     createProduct = async (req, res) => {
-        try {
-            // const errors = await validateProducto(req);
-        
-            // if (!errors.isEmpty()) {
-            //   const errorMessages = errors.array().map(error => error.msg);
-            //   return res.status(400).send({ success: false, message: errorMessages });
-            // }
-        
+        try {       
             const { name, description, stock, price } = req.body;
             const product = await Product.create({ name, description, stock, price });
             console.log(product);
