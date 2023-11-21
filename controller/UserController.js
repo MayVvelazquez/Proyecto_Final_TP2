@@ -1,5 +1,6 @@
 import { User } from "../Models/index.js";
 import { Op } from "sequelize";
+import { generateToken} from "../utils/jwt.js";
 
 class UserController {
     constructor() { }
@@ -10,10 +11,7 @@ class UserController {
             const users = await User.findAll({
                 attributes: ["id", "name", "email"],
             });
-            // Eliminar la contraseña de cada usuario antes de enviar la respuesta
-           /*  users.forEach(user => {
-                delete user.dataValues.password; //dataValues contiene los datos reales del usuario
-            }); */
+            
             res.status(200).send({ success: true, message: "Todos los usuarios", data: users })
         } catch (error) {
             res.status(500).send({ success: false, message: 'Error al obtener usuarios', error: error.message });
@@ -44,28 +42,17 @@ class UserController {
     createUser = async (req, res) => {
         try {
             const { name, email, password } = req.body;
-
-            // Verificar email
-            console.log("Valor del email:", email);
-            if (!email) {
-                return res.status(400).send({ success: false, message: 'Se requiere un email para crear el usuario' });
-            }
-            // Verifico si el email ya está en uso antes de crear el user
-            const existeUser = await User.findOne({ where: { email } });
-            if (existeUser) {
+           
+            const existeUser = await User.findOne({ where: { email: email } });
+            if (existeUser != null) {
                 return res.status(400).send({ success: false, message: 'El email ya está en uso' });
             }
-
-            // Creo el user si el email no está duplicado
-            const nuevoUser = await User.create({ name, email, password });
-            if (!nuevoUser) {
-                throw new Error('No se pudo crear el usuario');
-            }
-
-            return res.status(201).send({ success: true, message: 'Usuario creado correctamente', data: nuevoUser });
+                const nuevoUser = await User.create({ name, email, password });
+                res.status(201).send({ success: true, message: 'Usuario creado correctamente', data: nuevoUser });
+        
         } catch (error) {
             console.error(error);
-            return res.status(500).send({ success: false, message: 'Error al crear el usuario', error: error.message });
+           res.status(500).send({ success: false, message: 'Error al crear el usuario', error: error.message });
         }
     };
 
@@ -132,6 +119,7 @@ class UserController {
                 id: user.id,
             };
             const token = generateToken(payload);
+            console.log(`🚀 ~ UserController ~ login= ~ token:`, token);
             res.cookie("token", token);
 
             res.status(200).send({ success: true, message: "Usuario Logueado" });

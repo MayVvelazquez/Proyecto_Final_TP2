@@ -34,11 +34,6 @@ User.init({
         type: DT.STRING,
         allowNull: false
     },
-    vendorId: {
-        type: DT.INTEGER,
-        allowNull: true,
-        defaultValue: null
-    },
     salt: {
         type: DT.STRING
     },
