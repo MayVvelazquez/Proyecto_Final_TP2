@@ -11,8 +11,9 @@ userRoutes.post("/", userController.createUser);
 userRoutes.post("/login", userController.login);
 
 
-userRoutes.get("/me", validateUser, userController.me);
-userRoutes.use(validateUser);
+userRoutes.get("/me", userController.me);
+//userRoutes.use(validateUser);
+// validateUser,
 
 
 userRoutes.get("", userController.getAllUser);
