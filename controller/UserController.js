@@ -26,7 +26,7 @@ class UserController {
                 attributes: ['id', 'name', 'email'],
             });
             if (!user) {
-                return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
+                return res.status(404).send({ success: false, message: 'Usuario no encontrado / no hay cambios' });
             }
             res.status(200).send({ success: true, message: 'Usuario obtenido:', data: user });
         } catch (error) {
@@ -70,7 +70,7 @@ class UserController {
                 return res.status(404).send({ success: false, message: 'Usuario no encontrado' });
             }
 
-            return res.status(200).send({ success: true, message: 'Usuario actualizado correctamente' });
+            return res.status(200).send({ success: true, message: 'Usuario actualizado correctamente'});
         } catch (error) {
             console.error(error);
             return res.status(500).send({ success: false, message: 'Error al actualizar el usuario', error: error.message });
