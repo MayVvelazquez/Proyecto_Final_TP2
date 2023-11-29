@@ -121,6 +121,7 @@ class UserController {
     };
     me = async (req, res) => {
         try {
+            console.log(req)
             const { user } = req;
             res.status(200).send({ success: true, message: "Operacion exitosa", data: user });
         } catch (error) {
